@@ -79,8 +79,8 @@
 
 <div class="card">
   <h1>دعوة زفاف</h1>
-  <p>أدخل كلمة السر الخاصة بالدعوة</p>
-  <div id="passwordArea">
+  <p id="instruction">جاري التحقق...</p>
+  <div id="passwordArea" style="display:none;">
     <div id="passwordError"></div>
     <div class="input-group">
       <input type="password" id="passwordInput" placeholder="كلمة السر">
@@ -91,46 +91,65 @@
 </div>
 
 <script>
+  // الإعدادات
+  const usePassword = true;   // ← هنا تتحكم: true يطلب كلمة سر | false بدون كلمة سر
   const correctPassword = "1234";
 
   const guestCounts = {
-    "101": 3,
-    "102": 2,
-    "103": 5,
-    "104": 1
+    "1001": 3,
+    "1002": 2,
+    "1003": 5,
+    "1004": 1
   };
 
   const urlParams = new URLSearchParams(window.location.search);
   const guestID = urlParams.get('id');
 
+  const resultArea = document.getElementById("resultArea");
+  const passwordArea = document.getElementById("passwordArea");
+  const instruction = document.getElementById("instruction");
+  const errorDiv = document.getElementById("passwordError");
+
+  const usedInvites = JSON.parse(localStorage.getItem("usedInvites")) || {};
+
   function checkPassword() {
     const input = document.getElementById("passwordInput").value.trim();
-    const errorDiv = document.getElementById("passwordError");
-    const passwordArea = document.getElementById("passwordArea");
-    const resultArea = document.getElementById("resultArea");
-
     errorDiv.textContent = "";
 
     if (input === correctPassword) {
-      let message = "✅ تم قبول كلمة السر. ";
-
-      if (guestID) {
-        const count = guestCounts[guestID];
-        if (count) {
-          message += "هذه الدعوة مخصصة لـ " + count + " أشخاص.";
-        } else {
-          message += "رقم الدعوة غير مسجل.";
-        }
-      } else {
-        message += "لا يوجد رقم دعوة في الرابط.";
-      }
-
-      resultArea.textContent = message;
-      passwordArea.style.display = "none";
-      resultArea.style.display = "block";
+      showGuestInfo();
     } else {
       errorDiv.textContent = "كلمة السر غير صحيحة.";
     }
+  }
+
+  function showGuestInfo() {
+    if (usedInvites[guestID]) {
+      resultArea.textContent = "❌ تم استخدام هذه الدعوة من قبل.";
+    } else {
+      const count = guestCounts[guestID];
+      if (count) {
+        resultArea.textContent = "✅ هذه الدعوة مخصصة لـ " + count + " أشخاص.";
+        usedInvites[guestID] = true;
+        localStorage.setItem("usedInvites", JSON.stringify(usedInvites));
+      } else {
+        resultArea.textContent = "❌ رقم الدعوة غير مسجل.";
+      }
+    }
+    passwordArea.style.display = "none";
+    resultArea.style.display = "block";
+  }
+
+  // تشغيل الصفحة
+  if (guestID) {
+    if (usePassword) {
+      instruction.textContent = "أدخل كلمة السر الخاصة بالدعوة";
+      passwordArea.style.display = "block";
+    } else {
+      showGuestInfo();
+    }
+  } else {
+    instruction.textContent = "❌ لا يوجد رقم دعوة في الرابط.";
   }
 </script>
 
