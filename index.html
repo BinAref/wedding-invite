@@ -21,7 +21,7 @@
       text-align: center;
       -webkit-text-size-adjust: 100%;
       overflow-x: hidden;
-      overflow-y: hidden; /* منع تمرير الصفحة */
+      overflow-y: hidden;
     }
     body {
       display: flex;
@@ -40,27 +40,26 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 300px;
+      min-height: 320px;
       box-sizing: border-box;
       transition: transform 0.3s ease;
     }
     h1 {
       font-size: 3.5rem;
-      margin-bottom: 15px;
+      margin: 0 0 12px 0;
       font-weight: 700;
       letter-spacing: 2px;
       color: #a67c00;
       user-select: none;
     }
     p {
-      font-size: 1.3rem;
-      margin-bottom: 35px;
+      font-size: 1.4rem;
+      margin: 0 0 30px 0;
       color: #6b4f4f;
       user-select: none;
     }
     .input-row {
       display: flex;
-      justify-content: center;
       align-items: center;
       gap: 12px;
       width: 100%;
@@ -84,21 +83,21 @@
       box-shadow: 0 0 8px #e0b324;
     }
     button {
-      background: #a67c00;
-      color: white;
+      flex-shrink: 0;
+      min-width: 120px;
+      padding: 18px 25px;
       font-size: 1.6rem;
-      padding: 18px 30px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
       font-weight: 700;
+      background-color: #a67c00;
+      color: white;
       transition: background-color 0.3s ease;
-      flex-shrink: 0;
-      min-width: 130px;
       user-select: none;
     }
     button:hover {
-      background: #c2a235;
+      background-color: #c2a235;
     }
     .error {
       color: #bb3e03;
@@ -106,6 +105,7 @@
       min-height: 1.5rem;
       margin-top: 10px;
       font-weight: 600;
+      user-select: none;
     }
     .result {
       font-size: 2.2rem;
@@ -122,47 +122,50 @@
       h1 {
         font-size: 2.8rem;
       }
+      p {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+      }
       input[type="password"], button {
         font-size: 1.4rem;
-        padding: 14px 20px;
+        padding: 14px 18px;
         min-width: 110px;
       }
       .container {
         padding: 30px 20px;
         min-height: auto;
       }
+      .input-row {
+        gap: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container" id="container" role="main" aria-label="دعوة زفاف">
+  <main class="container" role="main" aria-label="دعوة زفاف">
     <h1>دعوة الزفاف</h1>
-    <p>أدخل كلمة السر الخاصة بالدعوة</p>
+    <p>أدخل السر الخاص بالدعوة</p>
     <div id="passwordArea">
       <div class="input-row">
-        <input type="password" id="passwordInput" placeholder="كلمة السر" aria-label="كلمة السر" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <input
+          type="password"
+          id="passwordInput"
+          placeholder="كلمة السر"
+          aria-label="كلمة السر"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
         <button onclick="checkPassword()" aria-label="دخول">دخول</button>
       </div>
       <div class="error" id="passwordError" role="alert" aria-live="assertive"></div>
     </div>
     <div class="result" id="resultArea" style="display:none;" aria-live="polite"></div>
-  </div>
+  </main>
 
   <script>
     const correctPassword = "wedding2025";
-
-    const guestList = {
-      "101": 3,
-      "102": 2,
-      "103": 4,
-      "104": 1,
-      "105": 2
-    };
-
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    }
 
     function checkPassword() {
       const input = document.getElementById("passwordInput").value.trim();
@@ -173,42 +176,23 @@
       errorDiv.textContent = "";
 
       if (input === correctPassword) {
-        const guestId = getQueryParam("id");
-
-        if (guestId) {
-          if (localStorage.getItem(guestId)) {
-            resultArea.innerHTML = `⚠️ معرّف الدعوة <strong>${guestId}</strong><br> تم استخدام هذا الكود مسبقًا.`;
-          } else if (guestList[guestId]) {
-            resultArea.innerHTML = `✅ معرّف الدعوة: <strong>${guestId}</strong><br>
-            هذا الكود صالح لـ <strong>${guestList[guestId]}</strong> أشخاص.`;
-            localStorage.setItem(guestId, "used");
-          } else {
-            resultArea.innerHTML = `⚠️ هذا المعرّف غير موجود في قائمة الدعوات.`;
-          }
-        } else {
-          resultArea.innerHTML = `⚠️ لا يوجد معرّف دعوة في الرابط.`;
-        }
-
+        resultArea.textContent = "تم قبول كلمة السر، مرحبًا بك في الدعوة!";
         passwordArea.style.display = "none";
         resultArea.style.display = "block";
-
       } else {
         errorDiv.textContent = "كلمة السر غير صحيحة.";
       }
     }
 
     // رفع المربع عند فتح الكيبورد
-    const container = document.getElementById('container');
+    const container = document.querySelector('.container');
     let initialInnerHeight = window.innerHeight;
 
     window.addEventListener('resize', () => {
       const resizedInnerHeight = window.innerHeight;
-
       if (resizedInnerHeight < initialInnerHeight) {
-        // الكيبورد مفتوح
         container.style.transform = 'translateY(-120px)';
       } else {
-        // الكيبورد مغلق
         container.style.transform = 'translateY(0)';
       }
     });
