@@ -1,1 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>دعوة زفاف - كلمة سر</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8f0e3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    input[type="password"] {
+      width: 80%;
+      padding: 10px;
+      margin: 15px 0;
+      font-size: 18px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .message {
+      font-size: 22px;
+      color: #333;
+      margin-top: 20px;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <h2>أدخل كلمة السر لعرض الدعوة</h2>
+    <input type="password" id="password" placeholder="كلمة السر" />
+    <br />
+    <button onclick="checkPassword()">دخول</button>
+    <div class="error" id="error"></div>
+  </div>
 
+  <script>
+    const correctPassword = "123456";  // عدل كلمة السر هنا
+
+    function checkPassword() {
+      const input = document.getElementById("password").value;
+      const errorDiv = document.getElementById("error");
+      const container = document.getElementById("container");
+
+      if (input === correctPassword) {
+        container.innerHTML = `
+          <div class="message">
+            هذا الكود صالح لـ 3 أشخاص.<br />
+            شكراً لحضوركم ونتمنى لكم أمسية طيبة.
+          </div>
+        `;
+      } else {
+        errorDiv.textContent = "كلمة السر غير صحيحة، حاول مرة أخرى.";
+      }
+    }
+  </script>
+</body>
+</html>
