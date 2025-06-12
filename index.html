@@ -3,60 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <title>دعوة زفاف</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Cairo', sans-serif;
       background: #f0ebe5;
       color: #222;
       margin: 0;
       padding: 0;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
       text-align: center;
-      overflow: hidden;
     }
     h1 {
       font-size: 60px;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
     }
-    p {
-      font-size: 28px;
-      margin: 10px 0;
+    .input-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px;
+      flex-wrap: nowrap;
+      width: 90%;
+      max-width: 600px;
     }
     input {
-      padding: 16px;
-      font-size: 24px;
+      flex: 1;
+      padding: 24px;
+      font-size: 32px;
       border: 2px solid #ccc;
-      border-radius: 8px;
+      border-radius: 12px 0 0 12px;
       text-align: center;
-      margin-top: 20px;
-      width: 250px;
+      outline: none;
     }
     button {
-      padding: 16px 30px;
-      font-size: 26px;
+      padding: 24px 30px;
+      font-size: 32px;
       background: #009688;
       color: #fff;
       border: none;
-      border-radius: 10px;
+      border-radius: 0 12px 12px 0;
       cursor: pointer;
-      margin-top: 20px;
+      flex-shrink: 0;
     }
     button:hover {
       background: #00796B;
     }
     .error {
       color: red;
-      font-size: 22px;
+      font-size: 26px;
       margin-top: 20px;
     }
     .result {
-      font-size: 40px;
-      margin-top: 40px;
-      line-height: 1.5;
+      font-size: 42px;
+      margin-top: 60px;
+      line-height: 1.6;
+      padding: 0 20px;
     }
   </style>
 </head>
@@ -65,17 +74,17 @@
   <h1>دعوة الزفاف</h1>
 
   <div id="passwordArea">
-    <p>أدخل كلمة السر</p>
-    <input type="password" id="passwordInput" placeholder="كلمة السر">
-    <br>
-    <button onclick="checkPassword()">دخول</button>
+    <div class="input-container">
+      <input type="password" id="passwordInput" placeholder="كلمة السر">
+      <button onclick="checkPassword()">دخول</button>
+    </div>
     <div class="error" id="passwordError"></div>
   </div>
 
   <div class="result" id="resultArea" style="display:none;"></div>
 
   <script>
-    const correctPassword = "2s";
+    const correctPassword = "wedding2025";
 
     const guestList = {
       "101": 3,
