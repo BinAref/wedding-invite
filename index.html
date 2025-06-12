@@ -1,203 +1,136 @@
 <!DOCTYPE html>
-<html lang="ar" >
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta charset="UTF-8">
   <title>دعوة زفاف</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap');
-    
-    * {
-      box-sizing: border-box;
-    }
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Cormorant Garamond', serif;
-      background: linear-gradient(135deg, #f7f1e1 0%, #e9d8a6 100%);
-      color: #6b4f4f;
-      direction: rtl;
-      text-align: center;
-      -webkit-text-size-adjust: 100%;
-      overflow-x: hidden;
-      overflow-y: hidden;
-    }
     body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #fff0f6, #ffe6f0);
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
       height: 100vh;
+      overflow: hidden;
     }
-    .container {
-      background: rgba(255, 255, 255, 0.95);
+    .card {
+      background: #fff;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(107, 79, 79, 0.2);
-      max-width: 480px;
-      width: 100%;
-      padding: 40px 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 320px;
-      box-sizing: border-box;
-      transition: transform 0.3s ease;
+      padding: 30px 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
     }
     h1 {
-      font-size: 3.5rem;
-      margin: 0 0 12px 0;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: #a67c00;
-      user-select: none;
+      margin-bottom: 20px;
+      color: #c2185b;
+      font-size: 28px;
     }
     p {
-      font-size: 1.4rem;
-      margin: 0 0 30px 0;
-      color: #6b4f4f;
-      user-select: none;
-    }
-    .input-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      max-width: 440px;
-      flex-wrap: wrap; /* مهم عشان يلتفوا */
-      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #333;
     }
     input[type="password"] {
-      flex: 1 1 200px;
-      min-width: 120px;
-      padding: 14px 16px;
-      font-size: 1.4rem;
-      border: 2px solid #a67c00;
-      border-radius: 12px;
-      outline: none;
-      font-family: 'Cormorant Garamond', serif;
-      text-align: center;
-      color: #6b4f4f;
-      transition: border-color 0.3s ease;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-left: 8px;
+      flex: 1;
       min-width: 0;
     }
-    input[type="password"]:focus {
-      border-color: #e0b324;
-      box-shadow: 0 0 8px #e0b324;
-    }
     button {
-      flex-shrink: 0;
-      min-width: 100px;
-      padding: 14px 20px;
-      font-size: 1.4rem;
+      padding: 10px 16px;
+      font-size: 16px;
+      background: #c2185b;
+      color: #fff;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: 700;
-      background-color: #a67c00;
-      color: white;
-      transition: background-color 0.3s ease;
-      user-select: none;
     }
     button:hover {
-      background-color: #c2a235;
+      background: #a3154e;
     }
-    .error {
-      color: #bb3e03;
-      font-size: 1.2rem;
-      min-height: 1.5rem;
-      margin-top: 10px;
-      font-weight: 600;
-      user-select: none;
+    .input-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
     }
-    .result {
-      font-size: 2.2rem;
-      margin-top: 40px;
-      line-height: 1.5;
-      color: #6b4f4f;
-      min-height: 4rem;
-      font-weight: 600;
-      padding: 0 10px;
-      user-select: none;
-      word-wrap: break-word;
+    #resultArea {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #444;
     }
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 2.8rem;
-      }
-      p {
-        font-size: 1.2rem;
-        margin-bottom: 20px;
-      }
-      input[type="password"], button {
-        font-size: 1.2rem;
-        padding: 12px 16px;
-        min-width: 90px;
-      }
-      .container {
-        padding: 30px 20px;
-        min-height: auto;
-      }
-      .input-row {
-        gap: 8px;
-      }
+    #passwordError {
+      color: red;
+      margin-bottom: 10px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <main class="container" role="main" aria-label="دعوة زفاف">
-    <h1>دعوة زفاف</h1>
-    <p>أدخل السر الخاص بالدعوة</p>
-    <div id="passwordArea">
-      <div class="input-row">
-        <input
-          type="password"
-          id="passwordInput"
-          placeholder="كلمة السر"
-          aria-label="كلمة السر"
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
-        />
-        <button onclick="checkPassword()" aria-label="دخول">دخول</button>
-      </div>
-      <div class="error" id="passwordError" role="alert" aria-live="assertive"></div>
+
+<div class="card">
+  <h1>دعوة زفاف</h1>
+  <p>أدخل كلمة السر الخاصة بالدعوة</p>
+  <div id="passwordArea">
+    <div id="passwordError"></div>
+    <div class="input-group">
+      <input type="password" id="passwordInput" placeholder="كلمة السر">
+      <button onclick="checkPassword()">دخول</button>
     </div>
-    <div class="result" id="resultArea" style="display:none;" aria-live="polite"></div>
-  </main>
+  </div>
+  <div id="resultArea" style="display:none;"></div>
+</div>
 
-  <script>
-    const correctPassword = "2s";
+<script>
+  const correctPassword = "1234";
 
-    function checkPassword() {
-      const input = document.getElementById("passwordInput").value.trim();
-      const errorDiv = document.getElementById("passwordError");
-      const passwordArea = document.getElementById("passwordArea");
-      const resultArea = document.getElementById("resultArea");
+  const guestCounts = {
+    "1001": 3,
+    "1002": 2,
+    "1003": 5,
+    "1004": 1
+  };
 
-      errorDiv.textContent = "";
+  const urlParams = new URLSearchParams(window.location.search);
+  const guestID = urlParams.get('id');
 
-      if (input === correctPassword) {
-        resultArea.textContent = "تم قبول كلمة السر، مرحبًا بك في الدعوة!";
-        passwordArea.style.display = "none";
-        resultArea.style.display = "block";
+  function checkPassword() {
+    const input = document.getElementById("passwordInput").value.trim();
+    const errorDiv = document.getElementById("passwordError");
+    const passwordArea = document.getElementById("passwordArea");
+    const resultArea = document.getElementById("resultArea");
+
+    errorDiv.textContent = "";
+
+    if (input === correctPassword) {
+      let message = "✅ تم قبول كلمة السر. ";
+
+      if (guestID) {
+        const count = guestCounts[guestID];
+        if (count) {
+          message += "هذه الدعوة مخصصة لـ " + count + " أشخاص.";
+        } else {
+          message += "رقم الدعوة غير مسجل.";
+        }
       } else {
-        errorDiv.textContent = "كلمة السر غير صحيحة.";
+        message += "لا يوجد رقم دعوة في الرابط.";
       }
+
+      resultArea.textContent = message;
+      passwordArea.style.display = "none";
+      resultArea.style.display = "block";
+    } else {
+      errorDiv.textContent = "كلمة السر غير صحيحة.";
     }
+  }
+</script>
 
-    const container = document.querySelector('.container');
-    let initialInnerHeight = window.innerHeight;
-
-    window.addEventListener('resize', () => {
-      const resizedInnerHeight = window.innerHeight;
-      if (resizedInnerHeight < initialInnerHeight) {
-        container.style.transform = 'translateY(-120px)';
-      } else {
-        container.style.transform = 'translateY(0)';
-      }
-    });
-  </script>
 </body>
 </html>
