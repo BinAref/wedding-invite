@@ -5,65 +5,74 @@
   <title>دعوة زفاف</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f8f0e3;
+      font-family: 'Cairo', sans-serif;
+      background: #f0ebe5;
+      color: #222;
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
       text-align: center;
+      overflow: hidden;
     }
-    .box {
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      max-width: 400px;
-      width: 90%;
+    h1 {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 28px;
+      margin: 10px 0;
     }
     input {
-      padding: 10px;
-      font-size: 18px;
-      margin: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      padding: 16px;
+      font-size: 24px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 20px;
+      width: 250px;
     }
     button {
-      padding: 10px 20px;
-      font-size: 18px;
-      background: #4CAF50;
+      padding: 16px 30px;
+      font-size: 26px;
+      background: #009688;
       color: #fff;
       border: none;
-      border-radius: 6px;
+      border-radius: 10px;
       cursor: pointer;
+      margin-top: 20px;
     }
     button:hover {
-      background: #45a049;
+      background: #00796B;
     }
     .error {
       color: red;
-      margin-top: 10px;
-    }
-    .result {
       font-size: 22px;
       margin-top: 20px;
+    }
+    .result {
+      font-size: 40px;
+      margin-top: 40px;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>دعوة الزفاف</h2>
-    <div id="passwordArea">
-      <p>أدخل كلمة السر</p>
-      <input type="password" id="passwordInput">
-      <br>
-      <button onclick="checkPassword()">دخول</button>
-      <div class="error" id="passwordError"></div>
-    </div>
-    <div class="result" id="resultArea" style="display:none;"></div>
+
+  <h1>دعوة الزفاف</h1>
+
+  <div id="passwordArea">
+    <p>أدخل كلمة السر</p>
+    <input type="password" id="passwordInput" placeholder="كلمة السر">
+    <br>
+    <button onclick="checkPassword()">دخول</button>
+    <div class="error" id="passwordError"></div>
   </div>
+
+  <div class="result" id="resultArea" style="display:none;"></div>
 
   <script>
     const correctPassword = "2s";
@@ -92,9 +101,9 @@
 
         if (guestId) {
           if (localStorage.getItem(guestId)) {
-            resultArea.innerHTML = `⚠️ هذا الكود معرّف الدعوة <strong>${guestId}</strong> تم استخدامه مسبقًا.`;
+            resultArea.innerHTML = `⚠️ معرّف الدعوة <strong>${guestId}</strong><br> تم استخدام هذا الكود مسبقًا.`;
           } else if (guestList[guestId]) {
-            resultArea.innerHTML = `معرّف الدعوة: <strong>${guestId}</strong><br>
+            resultArea.innerHTML = `✅ معرّف الدعوة: <strong>${guestId}</strong><br>
             هذا الكود صالح لـ <strong>${guestList[guestId]}</strong> أشخاص.`;
             localStorage.setItem(guestId, "used");
           } else {
@@ -112,5 +121,6 @@
       }
     }
   </script>
+
 </body>
 </html>
