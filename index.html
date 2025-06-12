@@ -1,85 +1,109 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <title>دعوة زفاف - كلمة سر</title>
+  <meta charset="UTF-8">
+  <title>دعوة زفاف</title>
   <style>
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: Arial, sans-serif;
       background: #f8f0e3;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-    }
-    .container {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       text-align: center;
+    }
+    .box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
       max-width: 400px;
       width: 90%;
     }
-    input[type="password"] {
-      width: 80%;
+    input {
       padding: 10px;
-      margin: 15px 0;
       font-size: 18px;
-      border: 2px solid #ccc;
+      margin: 10px;
       border-radius: 6px;
-      outline: none;
+      border: 1px solid #ccc;
     }
     button {
       padding: 10px 20px;
       font-size: 18px;
-      background-color: #4CAF50;
-      color: white;
+      background: #4CAF50;
+      color: #fff;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
     button:hover {
-      background-color: #45a049;
-    }
-    .message {
-      font-size: 22px;
-      color: #333;
-      margin-top: 20px;
+      background: #45a049;
     }
     .error {
       color: red;
       margin-top: 10px;
     }
+    .result {
+      font-size: 22px;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
-  <div class="container" id="container">
-    <h2>أدخل كلمة السر لعرض الدعوة</h2>
-    <input type="password" id="password" placeholder="كلمة السر" />
-    <br />
-    <button onclick="checkPassword()">دخول</button>
-    <div class="error" id="error"></div>
+  <div class="box">
+    <h2>دعوة الزفاف</h2>
+    <div id="passwordArea">
+      <p>أدخل كلمة السر</p>
+      <input type="password" id="passwordInput">
+      <br>
+      <button onclick="checkPassword()">دخول</button>
+      <div class="error" id="passwordError"></div>
+    </div>
+    <div class="result" id="resultArea" style="display:none;"></div>
   </div>
 
   <script>
-    const correctPassword = "123456";  // عدل كلمة السر هنا
+    // كلمة السر
+    const correctPassword = "wedding2025";
+
+    // قائمة IDs وعدد الأشخاص
+    const guestList = {
+      "101": 3,
+      "102": 2,
+      "103": 4,
+      "104": 1,
+      "105": 2
+    };
+
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
 
     function checkPassword() {
-      const input = document.getElementById("password").value;
-      const errorDiv = document.getElementById("error");
-      const container = document.getElementById("container");
+      const input = document.getElementById("passwordInput").value;
+      const errorDiv = document.getElementById("passwordError");
+      const passwordArea = document.getElementById("passwordArea");
+      const resultArea = document.getElementById("resultArea");
 
       if (input === correctPassword) {
-        container.innerHTML = `
-          <div class="message">
-            هذا الكود صالح لـ 3 أشخاص.<br />
-            شكراً لحضوركم ونتمنى لكم أمسية طيبة.
-          </div>
-        `;
+        const guestId = getQueryParam("id");
+
+        if (guestId && guestList[guestId]) {
+          resultArea.innerHTML = `معرّف الدعوة: <strong>${guestId}</strong><br>
+          هذا الكود صالح لـ <strong>${guestList[guestId]}</strong> أشخاص.`;
+        } else {
+          resultArea.innerHTML = `هذا المعرّف غير موجود في قائمة الدعوات.`;
+        }
+
+        passwordArea.style.display = "none";
+        resultArea.style.display = "block";
+
       } else {
-        errorDiv.textContent = "كلمة السر غير صحيحة، حاول مرة أخرى.";
+        errorDiv.textContent = "كلمة السر غير صحيحة.";
       }
     }
   </script>
