@@ -66,10 +66,8 @@
   </div>
 
   <script>
-    // كلمة السر
-    const correctPassword = "wedding2025";
+    const correctPassword = "S2025S";
 
-    // قائمة IDs وعدد الأشخاص
     const guestList = {
       "101": 3,
       "102": 2,
@@ -92,11 +90,18 @@
       if (input === correctPassword) {
         const guestId = getQueryParam("id");
 
-        if (guestId && guestList[guestId]) {
-          resultArea.innerHTML = `معرّف الدعوة: <strong>${guestId}</strong><br>
-          هذا الكود صالح لـ <strong>${guestList[guestId]}</strong> أشخاص.`;
+        if (guestId) {
+          if (localStorage.getItem(guestId)) {
+            resultArea.innerHTML = `⚠️ هذا الكود معرّف الدعوة <strong>${guestId}</strong> تم استخدامه مسبقًا.`;
+          } else if (guestList[guestId]) {
+            resultArea.innerHTML = `معرّف الدعوة: <strong>${guestId}</strong><br>
+            هذا الكود صالح لـ <strong>${guestList[guestId]}</strong> أشخاص.`;
+            localStorage.setItem(guestId, "used");
+          } else {
+            resultArea.innerHTML = `⚠️ هذا المعرّف غير موجود في قائمة الدعوات.`;
+          }
         } else {
-          resultArea.innerHTML = `هذا المعرّف غير موجود في قائمة الدعوات.`;
+          resultArea.innerHTML = `⚠️ لا يوجد معرّف دعوة في الرابط.`;
         }
 
         passwordArea.style.display = "none";
