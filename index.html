@@ -1,87 +1,130 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" >
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>دعوة زفاف</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap');
+    
     * {
       box-sizing: border-box;
     }
     body {
-      font-family: 'Cairo', sans-serif;
-      background: #f0ebe5;
-      color: #222;
       margin: 0;
-      padding: 0;
       height: 100vh;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
+      background: linear-gradient(135deg, #f7f1e1 0%, #e9d8a6 100%);
+      font-family: 'Cormorant Garamond', serif;
+      color: #6b4f4f;
+      direction: rtl;
       text-align: center;
+      padding: 20px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(107, 79, 79, 0.2);
+      max-width: 480px;
+      width: 100%;
+      padding: 40px 30px;
     }
     h1 {
-      font-size: 60px;
-      margin-bottom: 40px;
+      font-size: 3.5rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #a67c00;
     }
-    .input-container {
+    p {
+      font-size: 1.3rem;
+      margin-bottom: 35px;
+      color: #6b4f4f;
+    }
+    .input-row {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 20px;
-      flex-wrap: nowrap;
-      width: 90%;
-      max-width: 600px;
+      gap: 12px;
+      margin-bottom: 15px;
     }
-    input {
+    input[type="password"] {
       flex: 1;
-      padding: 24px;
-      font-size: 32px;
-      border: 2px solid #ccc;
-      border-radius: 12px 0 0 12px;
-      text-align: center;
+      padding: 18px 20px;
+      font-size: 1.6rem;
+      border: 2px solid #a67c00;
+      border-radius: 12px;
       outline: none;
+      font-family: 'Cormorant Garamond', serif;
+      text-align: center;
+      color: #6b4f4f;
+      transition: border-color 0.3s ease;
+    }
+    input[type="password"]:focus {
+      border-color: #e0b324;
+      box-shadow: 0 0 8px #e0b324;
     }
     button {
-      padding: 24px 30px;
-      font-size: 32px;
-      background: #009688;
-      color: #fff;
+      background: #a67c00;
+      color: white;
+      font-size: 1.6rem;
+      padding: 18px 30px;
       border: none;
-      border-radius: 0 12px 12px 0;
+      border-radius: 12px;
       cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.3s ease;
       flex-shrink: 0;
+      min-width: 130px;
     }
     button:hover {
-      background: #00796B;
+      background: #c2a235;
     }
     .error {
-      color: red;
-      font-size: 26px;
-      margin-top: 20px;
+      color: #bb3e03;
+      font-size: 1.2rem;
+      min-height: 1.5rem;
+      margin-top: 10px;
+      font-weight: 600;
     }
     .result {
-      font-size: 42px;
-      margin-top: 60px;
-      line-height: 1.6;
-      padding: 0 20px;
+      font-size: 2.2rem;
+      margin-top: 40px;
+      line-height: 1.5;
+      color: #6b4f4f;
+      min-height: 4rem;
+      font-weight: 600;
+    }
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2.8rem;
+      }
+      input[type="password"], button {
+        font-size: 1.4rem;
+        padding: 14px 20px;
+        min-width: 110px;
+      }
+      .container {
+        padding: 30px 20px;
+      }
     }
   </style>
 </head>
 <body>
-
-  <h1>دعوة الزفاف</h1>
-
-  <div id="passwordArea">
-    <div class="input-container">
-      <input type="password" id="passwordInput" placeholder="كلمة السر">
-      <button onclick="checkPassword()">دخول</button>
+  <div class="container" role="main" aria-label="دعوة زفاف">
+    <h1>دعوة الزفاف</h1>
+    <p>أدخل كلمة السر الخاصة بالدعوة</p>
+    <div id="passwordArea">
+      <div class="input-row">
+        <input type="password" id="passwordInput" placeholder="كلمة السر" aria-label="كلمة السر" />
+        <button onclick="checkPassword()" aria-label="دخول">دخول</button>
+      </div>
+      <div class="error" id="passwordError" role="alert" aria-live="assertive"></div>
     </div>
-    <div class="error" id="passwordError"></div>
+    <div class="result" id="resultArea" style="display:none;" aria-live="polite"></div>
   </div>
-
-  <div class="result" id="resultArea" style="display:none;"></div>
 
   <script>
     const correctPassword = "wedding2025";
@@ -100,10 +143,12 @@
     }
 
     function checkPassword() {
-      const input = document.getElementById("passwordInput").value;
+      const input = document.getElementById("passwordInput").value.trim();
       const errorDiv = document.getElementById("passwordError");
       const passwordArea = document.getElementById("passwordArea");
       const resultArea = document.getElementById("resultArea");
+
+      errorDiv.textContent = "";
 
       if (input === correctPassword) {
         const guestId = getQueryParam("id");
@@ -130,6 +175,5 @@
       }
     }
   </script>
-
 </body>
 </html>
